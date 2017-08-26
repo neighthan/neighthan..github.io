@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Home</title>
+  <title>Graphs and Games</title>
 
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
   <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
@@ -14,16 +14,9 @@
 <body>
 <v-app id="app">
   <v-toolbar dark class="teal">
-    <v-toolbar-title>Home</v-toolbar-title>
+    <v-toolbar-title>Graphs and Games</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-menu class="pa-3">
-      <span slot="activator">Classes</span>
-      <v-list>
-        <v-list-tile v-for="clas in classes" :key="clas.name">
-          <v-list-tile-title><a :href="clas.link" :style="{textDecoration: 'none', color: 'black'}">{{ clas.name }}</a></v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-menu>
+    <a v-for="item in navbarItems" :href="item.link" :style="{textDecoration: 'none', color: 'white'}">{{ item.name }}</a>
   </v-toolbar>
 
   <main>
@@ -38,14 +31,12 @@
 
 <script>
 
-  new Vue({
-      el: '#app',
-      data: {
-        classes: [
-            {name: 'Graphs and Games', link: "graphs_and_games/index.html"}
-        ]
-      }
-  })
+    new Vue({
+        el: '#app',
+        data: {
+            navbarItems: [{name: 'Create Map', link: 'create_map.html'}]
+        }
+    })
 
 </script>
 

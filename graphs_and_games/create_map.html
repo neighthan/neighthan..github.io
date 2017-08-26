@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Map</title>
+
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+
+  <style>
+    .cell {
+      height: 20px;
+      width: 20px;
+      margin: 1px;
+    }
+
+    .gridrow {
+      background-color: black;
+    }
+  </style>
+
+</head>
+
+<body>
+<v-app id="app">
+
+  <v-toolbar class="teal" dark>
+    <v-toolbar-title>Create Map</v-toolbar-title>
+  </v-toolbar>
+
+  <main>
+    <v-container fluid>
+      <v-layout row>
+        <v-card id="grid" height="800px">
+          <v-card-title>Hold ctrl and mouse over tiles to change their terrain.</v-card-title>
+          <v-card-text>
+            <!--TODO: keep the rows from expanding off of the edge of the card -->
+            <v-layout row v-for="(row, rowIdx) in grid" class="gridrow" :key="rowIdx">
+              <div v-for="cell in row" class="cell" :style="{backgroundColor: terrainTypes[cell.type].color}"
+                   @mouseover.ctrl="cell.type = selectedTerrain"></div>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+
+          <v-container fluid>
+            <v-flex xs6>
+              <v-card>
+                <v-card-text>
+                  <v-layout row>
+                    <v-layout column>Terrain Type</v-layout>
+                    <v-spacer></v-spacer>
+                    <v-layout column>Traversal Difficulty</v-layout>
+                  </v-layout>
+
+                  <v-layout row v-for="type in terrainTypes" :key="type.name">
+                    <!-- TODO: add in a patch next to each name that shows the color for that terrain type -->
+                    <v-radio :label="type.name" :value="type.name" v-model="selectedTerrain"></v-radio>
+                    <v-slider thumb-label v-model="type.cost" max="50"></v-slider>
+                  </v-layout>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+
+            <v-flex xs6>
+              <v-card>
+                <v-card-text>
+                  <v-slider label="Height" v-model="height" thumb-label max="100"></v-slider>
+                  <v-slider label="Width" v-model="width" thumb-label max="100"></v-slider>
+                  <v-btn @click="drawGrid">Draw Grid</v-btn>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+
+            <v-flex xs6>
+              <v-card>
+                <v-card-text>
+                  <!-- TODO: more data getting -->
+                  <v-btn @click="showGridData">Show Grid Data</v-btn>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+       </v-container>
+      </v-layout>
+    </v-container>
+  </main>
+
+  <v-footer class="teal">
+    <span class="white--text">Made with Vue magic</span>
+  </v-footer>
+</v-app>
+
+<script>
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            grid: [],
+            height: 30,
+            width: 40,
+            terrainTypes: {
+                road: {color: 'sandybrown', cost: 5, name: 'road'},
+                grassy: {color: 'lightgreen', cost: 8, name: 'grassy'},
+                forest: {color: 'darkgreen', cost: 13, name: 'forest'},
+                rocky: {color: 'grey', cost: 18, name: 'rocky'}
+            },
+            selectedTerrain: 'forest',
+        },
+        methods: {
+            // Making grid computed didn't work well; I think it tried to recompute it too often, so changing the cell
+            // types was very laggy. I just recompute the grid explicitly when needed with a button
+            drawGrid() {
+                this.grid = []
+                for (let rowIdx = 0; rowIdx < this.height; rowIdx++) {
+                    let row = [];
+                    for (let colIdx = 0; colIdx < this.width; colIdx++) {
+                        row.push({x: rowIdx, y: colIdx, type: 'road'})
+                    }
+                    this.grid.push(row)
+                }
+            },
+            showGridData() {
+                let data = []
+                for (let row of this.grid) {
+                    let types = []
+                    for (let cell of row) {
+                        types.push(this.terrainTypes[cell.type].cost)
+                    }
+                    data.push(types)
+                }
+                console.log(this.grid)
+                prompt("Grid Data", JSON.stringify(data))
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
