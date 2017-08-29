@@ -8,7 +8,8 @@
   <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
 
   <script src="https://unpkg.com/vue"></script>
-  <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+  <!--TODO: can we use v-radio-group to be compatible w/ the newest version? Has to be *immediate* parent, so can't wrap with v-layout row...-->
+  <script src="https://unpkg.com/vuetify@0.14.11"></script>
 
   <style>
     .cell {
@@ -45,50 +46,52 @@
           </v-card-text>
         </v-card>
 
-          <v-container fluid>
-            <v-flex xs6>
-              <v-card>
-                <v-card-text>
-                  <v-layout row>
-                    <v-layout column>Terrain Type</v-layout>
-                    <v-spacer></v-spacer>
-                    <v-layout column>Traversal Difficulty</v-layout>
-                  </v-layout>
+        <v-container fluid>
+          <v-flex xs6>
+            <v-card>
+              <v-card-text>
+                <v-layout row>
+                  <v-layout column>Terrain Type</v-layout>
+                  <v-spacer></v-spacer>
+                  <v-layout column>Traversal Difficulty</v-layout>
+                </v-layout>
 
-                  <v-layout row v-for="type in terrainTypes" :key="type.name">
-                    <!-- TODO: add in a patch next to each name that shows the color for that terrain type -->
-                    <v-radio :label="type.name" :value="type.name" v-model="selectedTerrain"></v-radio>
-                    <v-slider thumb-label v-model="type.cost" max="50"></v-slider>
-                  </v-layout>
-                </v-card-text>
-              </v-card>
-            </v-flex>
+                <v-layout row v-for="type in terrainTypes" :key="type.name">
+                  <!-- TODO: add in a patch next to each name that shows the color for that terrain type -->
+                  <v-radio :label="type.name" :value="type.name" v-model="selectedTerrain"></v-radio>
+                  <v-slider thumb-label v-model="type.cost" max="50"></v-slider>
+                </v-layout>
+              </v-card-text>
+            </v-card>
+          </v-flex>
 
-            <v-flex xs6>
-              <v-card>
-                <v-card-text>
-                  <v-slider label="Height" v-model="height" thumb-label max="100"></v-slider>
-                  <v-slider label="Width" v-model="width" thumb-label max="100"></v-slider>
-                  <v-btn @click="drawGrid">Draw Grid</v-btn>
-                </v-card-text>
-              </v-card>
-            </v-flex>
+          <v-flex xs6>
+            <v-card>
+              <v-card-text>
+                <v-slider label="Height" v-model="height" thumb-label max="100"></v-slider>
+                <v-slider label="Width" v-model="width" thumb-label max="100"></v-slider>
+                <v-btn @click="drawGrid">Draw Grid</v-btn>
+              </v-card-text>
+            </v-card>
+          </v-flex>
 
-            <v-flex xs6>
-              <v-card>
-                <v-card-text>
-                  <!-- TODO: more data getting -->
-                  <v-btn @click="showGridData">Show Grid Data</v-btn>
-                </v-card-text>
-              </v-card>
-            </v-flex>
-       </v-container>
+          <v-flex xs6>
+            <v-card>
+              <v-card-text>
+                <!-- TODO: more data getting -->
+                <v-btn @click="updateGridString">Update Grid String</v-btn>
+                <v-text-field :value="gridString"></v-text-field>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-container>
       </v-layout>
     </v-container>
   </main>
 
   <v-footer class="teal">
     <span class="white--text">Made with Vue magic</span>
+    <a href="data:text/plain,This is an example message." download="example.txt">click to download</a>
   </v-footer>
 </v-app>
 
@@ -106,6 +109,7 @@
                 rocky: {color: 'grey', cost: 18, name: 'rocky'}
             },
             selectedTerrain: 'forest',
+            gridString: ''
         },
         methods: {
             // Making grid computed didn't work well; I think it tried to recompute it too often, so changing the cell
@@ -120,7 +124,7 @@
                     this.grid.push(row)
                 }
             },
-            showGridData() {
+            updateGridString() {
                 let data = []
                 for (let row of this.grid) {
                     let types = []
@@ -130,10 +134,12 @@
                     data.push(types)
                 }
                 console.log(this.grid)
-                prompt("Grid Data", JSON.stringify(data))
+                this.gridString = JSON.stringify(data)
             }
         }
     })
+
+  vue.drawGrid()
 </script>
 
 </body>
