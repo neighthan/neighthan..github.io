@@ -148,9 +148,19 @@
             },
             updateTerrainString() {
                 this.terrainString = JSON.stringify(Object.values(this.terrainTypes)
-                    .sort(function(x, y) {
+                    .filter((x) => {
+                        for (let row of this.grid) {
+                            for (let cell of row) {
+                                if (cell.type === x.name) {
+                                    return true
+                                }
+                            }
+                        }
+                        return false
+                    })
+                    .sort((x, y) => {
                         return x.cost - y.cost
-                    }).map(function(x) {
+                    }).map((x) => {
                         return x.name.toUpperCase()
                     }))
             }
