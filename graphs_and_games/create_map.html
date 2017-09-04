@@ -84,6 +84,16 @@
               </v-card-text>
             </v-card>
           </v-flex>
+
+          <v-flex xs6>
+            <v-card>
+              <v-card-text>
+                <v-btn @click="updateTerrainString">Update Terrain String</v-btn>
+                <v-text-field :value="terrainString"></v-text-field>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+
         </v-container>
       </v-layout>
     </v-container>
@@ -91,7 +101,6 @@
 
   <v-footer class="teal">
     <span class="white--text">Made with Vue magic</span>
-    <a href="data:text/plain,This is an example message." download="example.txt">click to download</a>
   </v-footer>
 </v-app>
 
@@ -109,7 +118,8 @@
                 rocky: {color: 'grey', cost: 18, name: 'rocky'}
             },
             selectedTerrain: 'forest',
-            gridString: ''
+            gridString: '',
+            terrainString: ''
         },
         methods: {
             // Making grid computed didn't work well; I think it tried to recompute it too often, so changing the cell
@@ -135,6 +145,14 @@
                 }
                 console.log(this.grid)
                 this.gridString = JSON.stringify(data)
+            },
+            updateTerrainString() {
+                this.terrainString = JSON.stringify(Object.values(this.terrainTypes)
+                    .sort(function(x, y) {
+                        return x.cost - y.cost
+                    }).map(function(x) {
+                        return x.name.toUpperCase()
+                    }))
             }
         }
     })
