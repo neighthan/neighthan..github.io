@@ -14,7 +14,7 @@
 <body>
 <v-app id="app">
   <v-toolbar dark class="teal">
-    <v-toolbar-title>Graphs and Games</v-toolbar-title>
+    <v-toolbar-title>Home</v-toolbar-title>
     <v-spacer></v-spacer>
     <a v-for="item in navbarItems" :href="item.link" :style="{textDecoration: 'none', color: 'white'}">{{ item.name }}</a>
   </v-toolbar>
@@ -34,7 +34,11 @@
     new Vue({
         el: '#app',
         data: {
-            navbarItems: [{name: 'Create Map', link: 'create_map.html'}]
+            navbarItems: [
+                {name: 'Home', link: 'index.html'},
+                {name: 'Create Map', link: 'create_map.html'},
+                {name: 'View 8-Puzzle', link: 'eight_puzzle.html'}
+            ]
         }
     })
 

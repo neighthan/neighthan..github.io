@@ -28,8 +28,10 @@
 <body>
 <v-app id="app">
 
-  <v-toolbar class="teal" dark>
+  <v-toolbar dark class="teal">
     <v-toolbar-title>Create Map</v-toolbar-title>
+    <v-spacer></v-spacer>
+    <a v-for="item in navbarItems" :href="item.link" :style="{textDecoration: 'none', color: 'white'}">{{ item.name }}</a>
   </v-toolbar>
 
   <main>
@@ -119,7 +121,12 @@
             },
             selectedTerrain: 'forest',
             gridString: '',
-            terrainString: ''
+            terrainString: '',
+            navbarItems: [
+                {name: 'Home', link: 'index.html'},
+                {name: 'Create Map', link: 'create_map.html'},
+                {name: 'View 8-Puzzle', link: 'eight_puzzle.html'}
+            ]
         },
         methods: {
             // Making grid computed didn't work well; I think it tried to recompute it too often, so changing the cell

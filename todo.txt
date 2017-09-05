@@ -1,0 +1,8 @@
+graph class
+  - use tabs to make everything one page? Is there a way to replace the whole body, essentially, in each tab?
+  - fix the navbar to have space between the links
+
+eight_puzzle
+  - play and pause should be the same button ideally; just toggle between the two
+  - change delay into speed somehow
+  - get the puzzle centered and make it a little bigger
