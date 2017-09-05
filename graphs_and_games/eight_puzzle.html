@@ -21,38 +21,43 @@
 
   <main>
     <v-container fluid>
+      <v-layout row justify-center>
       <v-card>
         <v-card-text>
-          <v-flex xs3>
             <v-text-field v-model="puzzleString"></v-text-field>
-          </v-flex>
           <v-btn @click="generatePuzzle">Generate Puzzle</v-btn>
         </v-card-text>
       </v-card>
+      </v-layout>
 
       <br>
 
+      <v-layout row justify-center>
       <v-card>
-        <v-layout row wrap v-for="(row, rowIdx) of currentFrame" :key="'r' + rowIdx">
+        <v-layout row justify-center v-for="(row, rowIdx) of currentFrame" :key="'r' + rowIdx">
           <v-card v-for="num of row" :key="'c' + num">
-            <v-card-text :style="{color: num == 0? 'white' : 'black'}">
+            <v-card-text :style="{color: num == 0? 'white' : 'black', fontSize: 'xx-large'}">
               {{ num }}
             </v-card-text>
           </v-card>
         </v-layout>
 
-          <v-layout row>
+          <v-layout row justify-center>
             <v-btn @click="currentFrameIdx = 0"><v-icon>skip_previous</v-icon></v-btn>
             <v-btn @click="previousFrame"><v-icon>chevron_left</v-icon></v-btn>
             <v-btn @click="pause = true"><v-icon>pause</v-icon></v-btn>
             <v-btn @click="play"><v-icon>play_arrow</v-icon></v-btn>
             <v-btn @click="nextFrame"><v-icon>chevron_right</v-icon></v-btn>
             <v-btn @click="currentFrameIdx = puzzleFrames.length - 1"><v-icon>skip_next</v-icon></v-btn>
-            <v-flex xs3>
-              <v-slider v-model="frameDelay" max="500" label="Delay"></v-slider>
-            </v-flex>
           </v-layout>
+
+        <v-layout row justify-center>
+          <v-flex xs4>
+            <v-slider v-model="frameDelay" max="500" label="Delay"></v-slider>
+          </v-flex>
+        </v-layout>
       </v-card>
+      </v-layout>
 
     </v-container>
   </main>
